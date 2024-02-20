@@ -14,8 +14,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Context;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ApiResource(
@@ -56,6 +59,8 @@ class LockerFacility
      */
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Groups(['locker_facility:read'])]
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    #[ApiProperty(example: '2023-08-02')]
     private ?\DateTimeImmutable $commissionedAt = null;
 
     /**
@@ -69,11 +74,7 @@ class LockerFacility
     public function __construct(
         #[ORM\Column(length: 20)]
         #[NotBlank]
-        #[Groups(['locker_facility:read'])]
-        #[ApiProperty(
-            identifier: true,
-            example: 'Paris',
-        )]
+        #[ApiProperty(identifier: true)]
         private readonly string $name,
     ) {
         $this->parcelLockers = new ArrayCollection();
@@ -119,6 +120,9 @@ class LockerFacility
         $this->parcelLockers->removeElement($parcelLocker);
     }
 
+    #[Groups(['locker_facility:read'])]
+    #[SerializedName('name')]
+    #[ApiProperty(example: 'paris')]
     public function getCanonicalName(): string
     {
         return \mb_strtolower($this->getName());
