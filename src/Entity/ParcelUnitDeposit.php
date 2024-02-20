@@ -33,9 +33,6 @@ class ParcelUnitDeposit
     #[ORM\Column(length: 36)]
     private readonly string $guid;
 
-    #[ORM\Column]
-    private /*readonly*/ \DateTimeImmutable $depositedAt;
-
     public function __construct(
         #[ORM\ManyToOne]
         #[ORM\JoinColumn(nullable: false)]
@@ -43,11 +40,11 @@ class ParcelUnitDeposit
         #[ORM\ManyToOne]
         #[ORM\JoinColumn(nullable: false)]
         private readonly ParcelLocker $locker,
-        ?\DateTimeImmutable $depositedAt = null,
+        #[ORM\Column]
+        private /*readonly*/ \DateTimeImmutable $depositedAt,
         ?string $guid = null,
     ) {
         $this->guid = $guid ?: (string) Uuid::v4();
-        $this->depositedAt = $depositedAt ?: new \DateTimeImmutable();
     }
 
     public function getId(): ?int
