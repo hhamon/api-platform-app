@@ -4,10 +4,23 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Post;
+use App\ApiPlatform\State\ParcelDepositProcessor;
+use App\ParcelHandling\Model\ParcelDeposit;
 use App\Repository\ParcelUnitDepositRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Uid\Uuid;
 
+#[Post(
+    uriTemplate: '/parcel-unit-deposits',
+    denormalizationContext: [
+        AbstractNormalizer::GROUPS => ['parcel_deposit:write'],
+    ],
+    security: 'is_granted("ROLE_DELIVERY_MAN")',
+    input: ParcelDeposit::class,
+    processor: ParcelDepositProcessor::class,
+)]
 #[ORM\Entity(repositoryClass: ParcelUnitDepositRepository::class)]
 #[ORM\UniqueConstraint(name: 'parcel_unit_deposit_guid_unique', columns: ['guid'])]
 class ParcelUnitDeposit
