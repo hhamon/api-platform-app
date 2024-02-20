@@ -41,6 +41,9 @@ class LockerFacility
     #[ORM\Column(options: ['unsigned' => true])]
     private ?int $id = null;
 
+    /**
+     * The date of commissioning of this facility.
+     */
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $commissionedAt = null;
 
