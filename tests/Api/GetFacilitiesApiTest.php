@@ -25,6 +25,11 @@ final class GetFacilitiesApiTest extends ApiTestCase
         ]);
 
         LockerFacilityFactory::createOne([
+            'name' => 'Geneva',
+            'commissionedAt' => null,
+        ]);
+
+        LockerFacilityFactory::createOne([
             'name' => 'Paris',
             'commissionedAt' => new DateTimeImmutable('2023-08-16'),
         ]);
@@ -62,6 +67,20 @@ final class GetFacilitiesApiTest extends ApiTestCase
 
     public function testGetSingleFacilityDefaultsTo404(): void
     {
+        $this->browser()
+            ->get('/api/facilities/montreal')
+            ->assertStatus(404)
+            ->assertJson()
+            ->assertJsonMatches('"@id"', '/api/errors/404');
+    }
+
+    public function testGetSingleUncommissionedFacilityDefaultsTo404(): void
+    {
+        LockerFacilityFactory::createOne([
+            'name' => 'Montreal',
+            'commissionedAt' => null,
+        ]);
+
         $this->browser()
             ->get('/api/facilities/montreal')
             ->assertStatus(404)
