@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use App\Repository\LockerFacilityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,7 +15,23 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-#[ApiResource]
+#[ApiResource(
+    description: 'List of locker facilities resources',
+    operations: [
+        new Get(
+            uriTemplate: '/facilities/{id}',
+            openapi: new OpenApiOperation(
+                summary: 'Get a single locker facility resource by its primary identifier.',
+                description: 'Get a single `LockerFacility` resource by its primary identifier.',
+            ),
+            description: 'Get a single locker facility resource by its primary identifier.',
+        ),
+        new GetCollection(
+            uriTemplate: '/facilities',
+            description: 'Get a paginated collection of locker facilities.'
+        ),
+    ],
+)]
 #[ORM\Entity(repositoryClass: LockerFacilityRepository::class)]
 #[ORM\UniqueConstraint(name: 'locker_facility_name_unique', columns: ['name'])]
 class LockerFacility
