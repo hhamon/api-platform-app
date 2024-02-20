@@ -43,10 +43,16 @@ use Symfony\Component\Validator\Constraints\NotBlank;
         ),
         new GetCollection(
             uriTemplate: '/facilities',
+            formats: [
+                'jsonld',
+                'json',
+                'csv' => 'text/csv',
+            ],
             paginationItemsPerPage: 12,
             paginationMaximumItemsPerPage: 100,
             paginationClientEnabled: true,
             description: 'Get a paginated collection of locker facilities.',
+
         ),
     ],
     normalizationContext: [

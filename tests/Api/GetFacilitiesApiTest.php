@@ -48,6 +48,36 @@ final class GetFacilitiesApiTest extends ApiTestCase
             ->assertJsonMatches('"hydra:member"[1]."commissionedAt"', '2023-08-16');
     }
 
+    public function testGetFacilitiesAsCsv(): void
+    {
+        LockerFacilityFactory::createOne([
+            'name' => 'Montreal',
+            'commissionedAt' => new DateTimeImmutable('2023-08-10'),
+        ]);
+
+        LockerFacilityFactory::createOne([
+            'name' => 'Geneva',
+            'commissionedAt' => null,
+        ]);
+
+        LockerFacilityFactory::createOne([
+            'name' => 'Paris',
+            'commissionedAt' => new DateTimeImmutable('2023-08-16'),
+        ]);
+
+        $this->browser()
+            ->get('/api/facilities', [
+                'headers' => [
+                    'Accept' => 'text/csv',
+                ],
+            ])
+            ->assertStatus(200)
+            ->assertHeaderEquals('Content-Type', 'text/csv; charset=utf-8')
+            ->assertContains('commissionedAt,name')
+            ->assertContains('2023-08-10,Montreal')
+            ->assertContains('2023-08-16,Paris');
+    }
+
     public function testGetSingleFacilityResource(): void
     {
         LockerFacilityFactory::createOne([
