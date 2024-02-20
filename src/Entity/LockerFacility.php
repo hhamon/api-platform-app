@@ -27,6 +27,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
                 description: 'Get a single `LockerFacility` resource by its primary identifier.',
             ),
             description: 'Get a single locker facility resource by its primary identifier.',
+            normalizationContext: [
+                AbstractNormalizer::GROUPS => ['locker_facility:read', 'locker_facility:read:item'],
+            ],
         ),
         new GetCollection(
             uriTemplate: '/facilities',
@@ -58,6 +61,7 @@ class LockerFacility
      */
     #[ORM\OneToMany(mappedBy: 'facility', targetEntity: ParcelLocker::class)]
     #[ORM\OrderBy(['serial' => 'ASC'])]
+    #[Groups(['locker_facility:read:item'])]
     private Collection $parcelLockers;
 
     public function __construct(

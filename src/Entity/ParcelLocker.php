@@ -7,6 +7,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ParcelLockerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: ParcelLockerRepository::class)]
@@ -47,6 +48,7 @@ class ParcelLocker
     private ?int $id = null;
 
     #[ORM\Column(length: 15)]
+    #[Groups(['locker_facility:read:item'])]
     private string $state = self::STATE_READY_FOR_USE;
 
     #[ORM\Column(length: 6, nullable: true)]
@@ -71,8 +73,10 @@ class ParcelLocker
         #[ORM\JoinColumn(nullable: false)]
         private readonly LockerFacility $facility,
         #[ORM\Column(length: 4)]
+        #[Groups(['locker_facility:read:item'])]
         private readonly string $serial,
         #[ORM\Column(length: 2)]
+        #[Groups(['locker_facility:read:item'])]
         private readonly string $size = self::SIZE_SMALL
     ) {
     }
