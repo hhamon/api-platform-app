@@ -14,6 +14,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
 use App\Repository\LockerFacilityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -52,6 +53,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
         AbstractNormalizer::GROUPS => ['locker_facility:read'],
     ],
 )]
+#[ApiFilter(PropertyFilter::class)]
 #[ORM\Entity(repositoryClass: LockerFacilityRepository::class)]
 #[ORM\UniqueConstraint(name: 'locker_facility_name_unique', columns: ['name'])]
 class LockerFacility
