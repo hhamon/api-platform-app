@@ -1,5 +1,8 @@
 api_platform:
-    title: Hello API Platform
+    title: Confoo 2024 - Lockers System
+    description: |
+        Hello on my **API** application
+    show_webby: false
     version: 1.0.0
     formats:
         jsonld: ['application/ld+json']
