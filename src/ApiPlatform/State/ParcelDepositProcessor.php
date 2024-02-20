@@ -15,6 +15,7 @@ use App\ParcelHandling\Model\ParcelDeposit;
 use App\Repository\LockerFacilityRepository;
 use App\Repository\ParcelUnitDepositRepository;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class ParcelDepositProcessor implements ProcessorInterface
 {
@@ -22,7 +23,8 @@ final class ParcelDepositProcessor implements ProcessorInterface
         private readonly Security $security,
         private readonly DepositParcelUnit $depositParcelUnit,
         private readonly LockerFacilityRepository $lockerFacilityRepository,
-        private readonly ParcelUnitDepositRepository $parcelUnitDepositRepository,
+        #[Autowire(service: 'api_platform.doctrine.orm.state.persist_processor')]
+        private readonly ProcessorInterface $itemProcessor,
     ) {
     }
 
@@ -41,9 +43,7 @@ final class ParcelDepositProcessor implements ProcessorInterface
 
         $parcelUnitDeposit = $this->depositParcelUnit->deposit($facility, $data->parcelSerial, $deliveryOperator);
 
-        $this->parcelUnitDepositRepository->save($parcelUnitDeposit);
-
-        return $parcelUnitDeposit;
+        return $this->itemProcessor->process($parcelUnitDeposit, $operation, $uriVariables, $context);
 
     }
 }

@@ -34,7 +34,7 @@ class ParcelUnitDeposit
     private readonly string $guid;
 
     #[ORM\Column]
-    private readonly \DateTimeImmutable $depositedAt;
+    private /*readonly*/ \DateTimeImmutable $depositedAt;
 
     public function __construct(
         #[ORM\ManyToOne]
