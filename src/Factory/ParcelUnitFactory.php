@@ -48,7 +48,7 @@ final class ParcelUnitFactory extends ModelFactory
         return [
             'customerEmail' => self::faker()->email(),
             'isDamaged' => self::faker()->boolean(5),
-            'serial' => self::faker()->unique()->regexify('/^[A-Z0-9]{10}$/'),
+            'serial' => self::faker()->unique()->regexify(ParcelUnit::SERIAL_REGEX),
             'size' => self::faker()->randomElement(ParcelLocker::SIZES),
         ];
     }
