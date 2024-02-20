@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Common\Filter\DateFilterInterface;
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
@@ -64,6 +69,7 @@ class LockerFacility
     #[Groups(['locker_facility:read'])]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     #[ApiProperty(example: '2023-08-02')]
+    #[ApiFilter(DateFilter::class, strategy: DateFilterInterface::EXCLUDE_NULL)]
     private ?\DateTimeImmutable $commissionedAt = null;
 
     /**
@@ -78,6 +84,7 @@ class LockerFacility
         #[ORM\Column(length: 20)]
         #[NotBlank]
         #[ApiProperty(identifier: true)]
+        #[ApiFilter(SearchFilter::class, strategy: SearchFilterInterface::STRATEGY_PARTIAL)]
         private readonly string $name,
     ) {
         $this->parcelLockers = new ArrayCollection();
