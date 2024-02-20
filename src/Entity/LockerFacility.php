@@ -13,6 +13,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ApiResource(
@@ -31,6 +33,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
             description: 'Get a paginated collection of locker facilities.'
         ),
     ],
+    normalizationContext: [
+        AbstractNormalizer::GROUPS => ['locker_facility:read'],
+    ],
 )]
 #[ORM\Entity(repositoryClass: LockerFacilityRepository::class)]
 #[ORM\UniqueConstraint(name: 'locker_facility_name_unique', columns: ['name'])]
@@ -45,6 +50,7 @@ class LockerFacility
      * The date of commissioning of this facility.
      */
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    #[Groups(['locker_facility:read'])]
     private ?\DateTimeImmutable $commissionedAt = null;
 
     /**
@@ -57,6 +63,7 @@ class LockerFacility
     public function __construct(
         #[ORM\Column(length: 20)]
         #[NotBlank]
+        #[Groups(['locker_facility:read'])]
         private readonly string $name,
     ) {
         $this->parcelLockers = new ArrayCollection();
