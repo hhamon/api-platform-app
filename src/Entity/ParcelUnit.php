@@ -24,22 +24,27 @@ use Symfony\Component\Validator\Constraints\Regex;
 #[ApiResource(
     operations: [
         new Get(
-            uriTemplate: '/parcel-units/{serial}'
+            uriTemplate: '/parcel-units/{serial}',
+            security: 'is_granted("ROLE_DELIVERY_MAN")',
         ),
         new GetCollection(
-            uriTemplate: '/parcel-units'
+            uriTemplate: '/parcel-units',
+            normalizationContext: [
+                AbstractNormalizer::GROUPS => ['parcel_unit:read'],
+            ],
+            security: 'is_granted("ROLE_DELIVERY_MAN")'
         ),
         new Post(
             uriTemplate: '/parcel-units',
             denormalizationContext: [
                 AbstractNormalizer::GROUPS => ['parcel_unit:write:create'],
             ],
+            security: 'is_granted("ROLE_ADMIN")',
             validationContext: [
                 'groups' => [Constraint::DEFAULT_GROUP, 'parcel_unit:create'],
             ],
         ),
     ],
-    security: 'is_granted("ROLE_ADMIN")',
 )]
 #[ORM\Entity(repositoryClass: ParcelUnitRepository::class)]
 #[ORM\Index(columns: ['size'], name: 'parcel_unit_size_idx')]
@@ -58,7 +63,7 @@ class ParcelUnit
     public function __construct(
         #[ORM\Column(length: 10)]
         #[ApiProperty(identifier: true, example: '723GSQV3W2')]
-        #[Groups(['parcel_unit:write:create'])]
+        #[Groups(['parcel_unit:read', 'parcel_unit:write:create'])]
         #[NotBlank(groups: ['parcel_unit:create'])]
         #[Length(min: 10, max: 10, groups: ['parcel_unit:create'])]
         #[Regex(
@@ -69,21 +74,22 @@ class ParcelUnit
         private readonly string $serial,
 
         #[ORM\Column(length: 2)]
-        #[Groups(['parcel_unit:write:create'])]
+        #[Groups(['parcel_unit:read', 'parcel_unit:write:create'])]
         #[ApiProperty(example: ParcelLocker::SIZE_LARGE)]
         #[NotBlank(groups: ['parcel_unit:create'])]
         #[Choice(choices: ParcelLocker::SIZES, groups: ['parcel_unit:create'])]
         private readonly string $size,
 
         #[ORM\Column]
-        #[Groups(['parcel_unit:write:create'])]
-        #[ApiProperty(example: 'customer-42@example.com')]
+        #[Groups(['parcel_unit:read', 'parcel_unit:write:create'])]
+        #[ApiProperty(example: 'customer-42@example.com', security: 'is_granted("ROLE_ADMIN")')]
         #[NotBlank]
         #[Email]
         private string $customerEmail,
 
         #[ORM\Column]
-        #[Groups(['parcel_unit:write:create'])]
+        #[Groups(['parcel_unit:read', 'parcel_unit:write:create'])]
+        #[ApiProperty(example: true)]
         private bool $isDamaged = false,
     ) {
     }
