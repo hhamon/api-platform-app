@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ParcelLockerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: ParcelLockerRepository::class)]
 #[ORM\Index(columns: ['facility_id', 'state', 'size'], name: 'parcel_locker_search_available_at_facility_idx')]
 #[ORM\UniqueConstraint(name: 'parcel_locker_facility_serial_unique', columns: ['facility_id', 'serial'])]

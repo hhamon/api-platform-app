@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ParcelUnitRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: ParcelUnitRepository::class)]
 #[ORM\Index(columns: ['size'], name: 'parcel_unit_size_idx')]
 #[ORM\UniqueConstraint(name: 'parcel_unit_serial_unique', columns: ['serial'])]
