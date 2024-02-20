@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ facility.name }}{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .row-locker-state-inuse { background: #f7e4d1 }
+    .row-locker-state-readyforuse { background: #0ea5e9 }
+    .row-locker-state-outoforder { background: #9a3412; text-decoration: line-through }
+</style>
+
+<div class="example-wrapper">
+    <h1>{{ facility.name }}</h1>
+
+    <p>Commissioned at {{ facility.commissionedAt | date('d F Y') }}</p>
+
+    <ul>
+        <li>
+            <a href="{{ path('app_deposit_parcel', { name: facility.name | lower }) }}" id="parcel-deposit-link">
+                Parcel deposit
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_pickup_parcel', { name: facility.name | lower }) }}" id="parcel-pickup-link">
+                Parcel pickup
+            </a>
+        </li>
+    </ul>
+
+    <h2>Lockers</h2>
+
+    <div class="facility-lockers-wrapper">
+        <table id="facility-lockers">
+            <thead>
+            <tr>
+                <th>Number</th>
+                <th>Size</th>
+                <th>State</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for locker in lockers %}
+                <tr class="row-locker-state-{{ locker.state | replace({'-': ''}) }}">
+                    <td class="cell-locker-serial">{{ locker.serial }}</td>
+                    <td class="cell-locker-size">{{ locker.size }}</td>
+                    <td class="cell-locker-state">{{ locker.state }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

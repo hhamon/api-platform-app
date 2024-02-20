@@ -1,0 +1,17 @@
+#includes:
+#    - phpstan-baseline.neon
+
+parameters:
+    level: max
+    paths:
+        - bin/
+        - config/
+        - public/
+        - src/
+        - tests/
+
+    checkAlwaysTrueInstanceof: true
+    checkAlwaysTrueStrictComparison: true
+    checkExplicitMixedMissingReturn: true
+    reportWrongPhpDocTypeInVarTag: true
+    treatPhpDocTypesAsCertain: false

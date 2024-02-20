@@ -1,0 +1,15 @@
+{# @var \App\Entity\ParcelUnitDeposit parcel_deposit #}
+<p>
+    Hi,
+    <br><br>
+    Your parcel <strong>{{ parcel_deposit.parcel.serial }}</strong> has been deposited
+    at facility <strong>{{ parcel_deposit.facility.name }}</strong>.
+</p>
+
+<p>
+    Use <strong>{{ parcel_deposit.locker.unlockCode }}</strong> unlock code to pickup your parcel.
+</p>
+
+<p>
+    See you soon,
+</p>

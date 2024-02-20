@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Find Smart Lockers near you!' %}
+
+{% block body %}
+
+    <h1>Find a Smart Locker among {{ count }} results</h1>
+
+    <table id="locker-facilities">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date of commissioning</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for facility in facilities %}
+            <tr>
+                <td class="cell-locker-facility-name">
+                    <a href="{{ path('app_view_locker_facility', { name: facility.name | lower }) }}">
+                        {{- facility.name -}}
+                    </a>
+                </td>
+                <td>{{ facility.commissionedAt | date('d M Y') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination-wrapper">
+        <ul>
+        {% for page in 1 .. facilities.totalPages %}
+            <li>
+                {% if page == facilities.currentPage %}
+                    {{ page }}
+                {% else %}
+                    <a href="{{ path('app_homepage', { page: {number: page } }) }}">
+                        {{- page -}}
+                    </a>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

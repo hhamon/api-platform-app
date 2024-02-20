@@ -1,0 +1,3 @@
+services:
+    App\ParcelHandling\LockerUnlockCodeGeneratorInterface:
+        alias: App\ParcelHandling\StaticLockerUnlockCodeGenerator

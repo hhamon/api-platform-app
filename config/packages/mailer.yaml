@@ -1,0 +1,8 @@
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
+        envelope:
+            sender: 'noreply@example.com'
+        headers:
+            From: 'noreply@example.com'
+#            Bcc: 'marketing@example.com'
