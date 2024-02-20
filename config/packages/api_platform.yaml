@@ -19,3 +19,4 @@ api_platform:
             rfc_7807_compliant_errors: true
     event_listeners_backward_compatibility_layer: false
     keep_legacy_inflector: false
+    path_segment_name_generator: api_platform.metadata.path_segment_name_generator.dash
