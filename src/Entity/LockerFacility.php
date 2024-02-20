@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
     description: 'List of locker facilities resources',
     operations: [
         new Get(
-            uriTemplate: '/facilities/{id}',
+            uriTemplate: '/facilities/{name}',
             openapi: new OpenApiOperation(
                 summary: 'Get a single locker facility resource by its primary identifier.',
                 description: 'Get a single `LockerFacility` resource by its primary identifier.',
@@ -47,6 +48,7 @@ class LockerFacility
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(options: ['unsigned' => true])]
+    #[ApiProperty(identifier: false)]
     private ?int $id = null;
 
     /**
@@ -68,6 +70,10 @@ class LockerFacility
         #[ORM\Column(length: 20)]
         #[NotBlank]
         #[Groups(['locker_facility:read'])]
+        #[ApiProperty(
+            identifier: true,
+            example: 'Paris',
+        )]
         private readonly string $name,
     ) {
         $this->parcelLockers = new ArrayCollection();
