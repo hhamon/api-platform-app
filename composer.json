@@ -9,15 +9,18 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "api-platform/core": "^3.2.14",
         "beberlei/assert": "^3.3.2",
         "doctrine/doctrine-bundle": "^2.11.3",
         "doctrine/doctrine-migrations-bundle": "^3.3.0",
-        "doctrine/orm": "^3.0.0",
+        "doctrine/orm": "^2.18.0",
         "easycorp/easyadmin-bundle": "^4.9.1",
+        "nelmio/cors-bundle": "^2.4",
         "pagerfanta/doctrine-orm-adapter": "^4.3.1",
         "phpdocumentor/reflection-docblock": "^5.3.0",
         "phpstan/phpdoc-parser": "^1.25.0",
         "symfony/asset": "7.0.*",
+        "symfony/clock": "7.0.*",
         "symfony/console": "7.0.*",
         "symfony/dotenv": "7.0.*",
         "symfony/expression-language": "7.0.*",
@@ -131,8 +134,7 @@
         "rebuild:test": [
             "@php bin/console doctrine:database:drop --force --if-exists --no-interaction -e test",
             "@php bin/console doctrine:database:create --no-interaction -e test",
-            "@php bin/console doctrine:migration:migrate --no-interaction -e test",
-            "@php bin/console doctrine:fixtures:load --no-interaction -e test"
+            "@php bin/console doctrine:migration:migrate --no-interaction -e test"
         ],
         "test": [
             "@rebuild:test",

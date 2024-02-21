@@ -11,6 +11,8 @@ use App\ParcelHandling\Event\ParcelUnitDepositedEvent;
 use App\ParcelHandling\Event\ParcelUnitDepositingEvent;
 use App\Repository\ParcelUnitDepositRepository;
 use App\Repository\ParcelUnitRepository;
+use Symfony\Component\Clock\Clock;
+use Symfony\Component\Clock\DatePoint;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DepositParcelUnit
@@ -34,6 +36,7 @@ class DepositParcelUnit
         $parcelUnitDeposit = new ParcelUnitDeposit(
             parcel: $parcel,
             locker: $locker,
+            depositedAt: new DatePoint(),
         );
 
         $locker->acceptParcelDeposit(

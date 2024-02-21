@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ParcelLockerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: ParcelLockerRepository::class)]
 #[ORM\Index(columns: ['facility_id', 'state', 'size'], name: 'parcel_locker_search_available_at_facility_idx')]
 #[ORM\UniqueConstraint(name: 'parcel_locker_facility_serial_unique', columns: ['facility_id', 'serial'])]
@@ -45,6 +48,7 @@ class ParcelLocker
     private ?int $id = null;
 
     #[ORM\Column(length: 15)]
+    #[Groups(['locker_facility:read:item'])]
     private string $state = self::STATE_READY_FOR_USE;
 
     #[ORM\Column(length: 6, nullable: true)]
@@ -69,8 +73,10 @@ class ParcelLocker
         #[ORM\JoinColumn(nullable: false)]
         private readonly LockerFacility $facility,
         #[ORM\Column(length: 4)]
+        #[Groups(['locker_facility:read:item'])]
         private readonly string $serial,
         #[ORM\Column(length: 2)]
+        #[Groups(['locker_facility:read:item'])]
         private readonly string $size = self::SIZE_SMALL
     ) {
     }
